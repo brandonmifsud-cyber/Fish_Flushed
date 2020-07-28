@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class FishMovement : MonoBehaviour
 {
-    public float speed;
+    public float speed, lookForward;
     private Rigidbody rb;
    
     private Vector3 movement;
@@ -27,13 +27,16 @@ public class FishMovement : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         //movement of fish
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         movement = new Vector3(x, y, 0) * speed * Time.deltaTime;
         rb.MovePosition(transform.position + movement);
+        //rotation of fish(makes look like swimming left to right)
+        Vector3 lookPos = transform.position + movement + Vector3.forward * lookForward;
+        transform.LookAt(lookPos,Vector3.up);
     }
 
     void OnCollisionEnter(Collision col)
