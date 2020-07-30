@@ -41,6 +41,7 @@ public class FishMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
+        // counter for pickups collected
         if (col.gameObject.CompareTag("Pick Up"))
         {
            col.gameObject.SetActive(false);
