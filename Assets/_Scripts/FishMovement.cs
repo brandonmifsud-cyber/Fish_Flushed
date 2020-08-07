@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class FishMovement : MonoBehaviour
 {
+    //variables used in inspector
     public float speed, lookForward;
     private Rigidbody rb;
    
     private Vector3 movement;
-    public Text countText, totalScore;
+    private AudioClip effect;
+
+
+    public Text countText, countText2, totalScore;
     public string replay;
-    public GameObject ps;
-
-
+    public SpawnObject spawn;
+    public AudioSource bubbleEffect;
+    public AudioClip bubble;
     int count;
     
    
@@ -22,8 +27,14 @@ public class FishMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
+        //links to the counter in game
         SetCountText();
         totalScore.text = "";
+        
+        bubbleEffect = GetComponent<AudioSource>();
+        effect = bubble;
+        bubbleEffect.Play();
+
     }
 
 
@@ -44,11 +55,18 @@ public class FishMovement : MonoBehaviour
         // counter for pickups collected
         if (col.gameObject.CompareTag("Pick Up"))
         {
-           col.gameObject.SetActive(false);
             count = count + 1;
             SetCountText();
+            spawn.obstacleList.Remove(col.gameObject);
+            Destroy(col.gameObject);
         }
-        else if (col.gameObject.CompareTag("Destroy"))
+        else if (col.gameObject.CompareTag("Booster"))
+        {
+            spawn.Booster();
+            spawn.obstacleList.Remove(col.gameObject);
+            Destroy(col.gameObject);
+        }
+        else if  (col.gameObject.CompareTag("Destroy"))
         {
             Destroy(gameObject);
 
@@ -60,7 +78,10 @@ public class FishMovement : MonoBehaviour
     void SetCountText()
     {
         //need to fix "add a popup when game gets destroyed
-        countText.text = "Count: " + count.ToString();
-       
+        countText.text = "COUNT: " + count.ToString();
+        countText2.text = "COUNT: " + count.ToString();
+
     }
+
+
 }

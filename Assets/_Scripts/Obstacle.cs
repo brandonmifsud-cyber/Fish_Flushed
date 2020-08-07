@@ -5,6 +5,7 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     public float speed, killz;
+    public SpawnObject so;
    
     
     void Start()
@@ -18,6 +19,7 @@ public class Obstacle : MonoBehaviour
         transform.Translate(0, 0, speed * Time.deltaTime);
         if (transform.position.z <= killz)
         {
+            so.obstacleList.Remove(gameObject);
             Destroy(gameObject);
         }
     }

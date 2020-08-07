@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 2d37eb04d692341439c8286f6697e259
+  - enabled: 1
+    path: Assets/Scenes/Fishrunner.unity
+    guid: 3c17438e538541d48bc459a910813f7e
   m_configObjects: {}
