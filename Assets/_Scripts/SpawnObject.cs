@@ -13,13 +13,14 @@ public class SpawnObject : MonoBehaviour
    
     void Start()
     {
-        
+        // triggers what to spawn
         Invoke("SpawnMaker", spawnRate);
         Invoke("DifficultyIncrease", difficultyRate);
     }
 
     void Update()
     {
+        //what happens when boost has been triggered
         if (boosting == true)
         {
             boostTimer -= Time.deltaTime;
@@ -39,6 +40,7 @@ public class SpawnObject : MonoBehaviour
     }
     void DifficultyIncrease()
     {
+        //spawn rate over time will increase
         spawnRate = Mathf.Clamp(spawnRate - .0005f, minRate, 100f);
         obsSpeed = Mathf.Clamp(obsSpeed - .001f, maxSpeed, 100f);
 
@@ -48,7 +50,7 @@ public class SpawnObject : MonoBehaviour
 
     void SpawnMaker() 
     {
-
+        // how slow the objects will move after boost trigger active
         float tempSpeed = obsSpeed;
         if (boosting == true)
         {
@@ -75,6 +77,7 @@ public class SpawnObject : MonoBehaviour
 
     public void Booster()
     {
+        // when boost active will slow by 8secs
         boosting = true;
         boostTimer += 8;
 

@@ -7,11 +7,6 @@ public class Obstacle : MonoBehaviour
     public float speed, killz;
     public SpawnObject so;
    
-    
-    void Start()
-    {
-        
-    }
 
     void Update()
     {

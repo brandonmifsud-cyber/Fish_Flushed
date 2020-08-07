@@ -30,7 +30,7 @@ public class FishMovement : MonoBehaviour
         //links to the counter in game
         SetCountText();
         totalScore.text = "";
-        
+        // plays audio file
         bubbleEffect = GetComponent<AudioSource>();
         effect = bubble;
         bubbleEffect.Play();
@@ -45,7 +45,7 @@ public class FishMovement : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         movement = new Vector3(x, y, 0) * speed * Time.deltaTime;
         rb.MovePosition(transform.position + movement);
-        //rotation of fish(makes look like swimming left to right)
+        //rotation of fish(makes look like swimming left to right) more smooth too
         Vector3 lookPos = transform.position + movement + Vector3.forward * lookForward;
         transform.LookAt(lookPos,Vector3.up);
     }
@@ -60,12 +60,14 @@ public class FishMovement : MonoBehaviour
             spawn.obstacleList.Remove(col.gameObject);
             Destroy(col.gameObject);
         }
+        //triggers the boost effect
         else if (col.gameObject.CompareTag("Booster"))
         {
             spawn.Booster();
             spawn.obstacleList.Remove(col.gameObject);
             Destroy(col.gameObject);
         }
+        //destroy game object on coliision and reload scene
         else if  (col.gameObject.CompareTag("Destroy"))
         {
             Destroy(gameObject);
@@ -77,7 +79,7 @@ public class FishMovement : MonoBehaviour
     }
     void SetCountText()
     {
-        //need to fix "add a popup when game gets destroyed
+        //diplays the counter for pickups collected
         countText.text = "COUNT: " + count.ToString();
         countText2.text = "COUNT: " + count.ToString();
 
