@@ -5,9 +5,9 @@ using UnityEngine;
 public class SpawnObject : MonoBehaviour
 {
     public GameObject[] mySpawns;
-    public GameObject[] obstacle;
+    public GameObject[] obstacle;//obstacles spawned in the array
     public float spawnRate, minRate, difficultyRate, obsSpeed, maxSpeed, boostSpeed, boostTimer;
-    public List<GameObject> obstacleList = new List<GameObject>();
+    public List<GameObject> obstacleList = new List<GameObject>();//spawns in the inspector whats in play screen
     public GameObject boost;
     private bool boosting;
    
@@ -24,10 +24,11 @@ public class SpawnObject : MonoBehaviour
         if (boosting == true)
         {
             boostTimer -= Time.deltaTime;
-            boostTimer = Mathf.Clamp(boostTimer, 0, 16);
+            boostTimer = Mathf.Clamp(boostTimer, 0, 16);//allows up to 16 seconds slow motion
             if (boostTimer == 0)
             {
                 boosting = false;
+                boost.SetActive(false);//activate slow motion ui in scene
                 foreach (GameObject obs in obstacleList)
                 {
                     obs.GetComponent<Obstacle>().speed -= boostSpeed;
@@ -55,17 +56,12 @@ public class SpawnObject : MonoBehaviour
         if (boosting == true)
         {
             tempSpeed += boostSpeed;
-            boost.SetActive(true);
-        }
-        else
-        {
-            boost.SetActive(false);
         }
         //randomly picks objects to spit out for oncoming objects
-        int spawnSelector = Random.Range(0, mySpawns.Length);
+        int spawnSelector = Random.Range(0, mySpawns.Length);//actively random;y picks objects in inspector panel from spawn points in game
         int objectSelector = Random.Range(0, obstacle.Length);
         GameObject obs = Instantiate(obstacle[objectSelector], mySpawns[spawnSelector].transform.position, mySpawns[spawnSelector].transform.rotation);
-        obstacleList.Add(obs);
+        obstacleList.Add(obs); // shows in inpsector panel objects
         obs.GetComponent<Obstacle>().speed = tempSpeed;
         obs.GetComponent<Obstacle>().so = this;
 
@@ -80,14 +76,30 @@ public class SpawnObject : MonoBehaviour
         // when boost active will slow by 8secs
         boosting = true;
         boostTimer += 8;
+        StartCoroutine(Pulse()); // activate pulse function
 
-        foreach(GameObject obs in obstacleList)
+        foreach (GameObject obs in obstacleList)
         {
             obs.GetComponent<Obstacle>().speed = obsSpeed + boostSpeed;
 
         }
     }
 
-    
+    IEnumerator Pulse()// makes the slow motion flash on and off
+    {
+        if (boosting == true)
+        {
+            // controls the delays of on and off for slow motion title
+            boost.SetActive(true);
+            yield return new WaitForSeconds(.5f);//stays active for 1/2 sec
+            boost.SetActive(false);
+            yield return new WaitForSeconds(.25f);// waits 1/4 of sec to come back on
+            if (boosting == true)
+            {
+                StartCoroutine(Pulse());
+            }
+        }
+
+    }
     
 }

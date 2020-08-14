@@ -11,11 +11,11 @@ public class Obstacle : MonoBehaviour
     void Update()
     {
         // destroys the Game object at set location after camera
-        transform.Translate(0, 0, speed * Time.deltaTime);
+        transform.Translate(0, 0, speed * Time.deltaTime);// moves on the z axis towards the player
         if (transform.position.z <= killz)
         {
             so.obstacleList.Remove(gameObject);
-            Destroy(gameObject);
+            Destroy(gameObject);//destroy the fish character
         }
     }
 }

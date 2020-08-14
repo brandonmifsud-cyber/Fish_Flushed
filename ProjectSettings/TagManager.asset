@@ -7,6 +7,8 @@ TagManager:
   - Pick Up
   - Destroy
   - Booster
+  - Manager
+  - Score
   layers:
   - Default
   - TransparentFX

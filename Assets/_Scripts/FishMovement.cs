@@ -13,6 +13,7 @@ public class FishMovement : MonoBehaviour
    
     private Vector3 movement;
     private AudioClip effect;
+    public DontDestroy scoreCount;
 
 
     public Text countText, countText2, totalScore;
@@ -28,23 +29,24 @@ public class FishMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         count = 0;
         //links to the counter in game
-        SetCountText();
+        SetCountText(); //LINK TO THE function
         totalScore.text = "";
         // plays audio file
-        bubbleEffect = GetComponent<AudioSource>();
+       /* bubbleEffect = GetComponent<AudioSource>();
         effect = bubble;
-        bubbleEffect.Play();
-
+        bubbleEffect.Play();*/
+        // to keep count of score
+        scoreCount = FindObjectOfType<DontDestroy>();
     }
 
 
     void FixedUpdate()
     {
         //movement of fish
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        movement = new Vector3(x, y, 0) * speed * Time.deltaTime;
-        rb.MovePosition(transform.position + movement);
+        float x = Input.GetAxis("Horizontal"); //movement left to right
+        float y = Input.GetAxis("Vertical"); // movement up and down
+        movement = new Vector3(x, y, 0) * speed;
+        rb.velocity = movement;
         //rotation of fish(makes look like swimming left to right) more smooth too
         Vector3 lookPos = transform.position + movement + Vector3.forward * lookForward;
         transform.LookAt(lookPos,Vector3.up);
@@ -52,26 +54,25 @@ public class FishMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        // counter for pickups collected
-        if (col.gameObject.CompareTag("Pick Up"))
+        
+        if (col.gameObject.CompareTag("Pick Up"))//when game object with tag is hit will count pickUps
         {
             count = count + 1;
             SetCountText();
-            spawn.obstacleList.Remove(col.gameObject);
+            spawn.obstacleList.Remove(col.gameObject);//spawns in the inspector whats in play screen
             Destroy(col.gameObject);
         }
         //triggers the boost effect
-        else if (col.gameObject.CompareTag("Booster"))
+        else if (col.gameObject.CompareTag("Booster"))//when game object with tag is hit will activate boost
         {
             spawn.Booster();
-            spawn.obstacleList.Remove(col.gameObject);
+            spawn.obstacleList.Remove(col.gameObject);//spawns in the inspector whats in play screen
             Destroy(col.gameObject);
         }
         //destroy game object on coliision and reload scene
-        else if  (col.gameObject.CompareTag("Destroy"))
+        else if  (col.gameObject.CompareTag("Destroy"))//when game object with tag is hit will load new scene
         {
-            Destroy(gameObject);
-
+            scoreCount.score = count;
             //reloads scene currently0
             SceneManager.LoadScene(sceneName: replay);
         }
@@ -80,8 +81,9 @@ public class FishMovement : MonoBehaviour
     void SetCountText()
     {
         //diplays the counter for pickups collected
-        countText.text = "COUNT: " + count.ToString();
-        countText2.text = "COUNT: " + count.ToString();
+        countText.text = "COUNT: " + count.ToString();//main screen display
+        countText2.text = "COUNT: " + count.ToString();//pause screen
+
 
     }
 

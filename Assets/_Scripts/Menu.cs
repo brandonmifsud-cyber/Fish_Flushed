@@ -11,7 +11,7 @@ public class Menu : MonoBehaviour
     //loads menu back and fourth between play pause resume mainmenu
     private void Start()
     {
-        Pause();
+        Pause();// activates pause function
     }
     void Update()
     {
@@ -19,33 +19,40 @@ public class Menu : MonoBehaviour
         {
             if (paused)
             {
-                Resume();
+                Resume();// activate resume funtcion
             }
-            else
+            else 
             {
-                Pause();
+                Pause();// activates pause function
             }
+            
         }
     }
 
-    public void Resume()
+    public void Resume() // plays the game from time paused
     {
         paused = false;
         pauseScreen.SetActive(false);
+        // to resaume play at normal time
         Time.timeScale = 1;
     }
 
-    public void Pause()
+    public void Pause()//  pause function
     {
         paused = true;
         pauseScreen.SetActive(true);
-        Time.timeScale = 0;
+        Time.timeScale = 0; // stops time in game play
 
     }
 
-    public void LoadScene(string sceneName)
+    public void LoadScene(string sceneName) // loads scene set in inspector
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1; // sets time back to running speed of computer     ;)
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }
